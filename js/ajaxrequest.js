@@ -19,7 +19,7 @@ $(document).ready(function() {
           $("#signup").attr("disabled", true);
     } else if (data == 0 && reg.test(stuemail)) {
           $("#statusMsg2").html(
-          '<small style="color: green;">You Can Continue</small>'
+          '<small style="color: green;">You may Continue</small>'
           );
           $("#signup").attr("disabled", false);
       } else if(!reg.test(stuemail)) {
@@ -56,7 +56,13 @@ function addStu() {
     );
     $("$stuname").focus();
     return false;
-  } 
+  } if(!/^[a-zA-Z]+$/.test(stuname.trim())) {
+    $("#statusMsg1").html(
+      '<small style="color: red;">Name must contain only letters!</small>'
+    );
+    $("#stuname").focus();
+    return false;
+  }
   else if(stuemail.trim() == "") {
     $("#statusMsg2").html(
       '<small style="color: red;">Please Enter Email!</small>'

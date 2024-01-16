@@ -20,7 +20,7 @@
 
           <?php
             if(!isset($_SESSION['is_login'])){
-              echo ' <a href="#" class="btn btn-danger mt-3" data-toggle="modal" data-target="#stuRegModalCenter">Register For Free!</a>';
+              echo ' <a href="#" class="btn btn-danger mt-3" data-toggle="modal" data-target="#stuRegModalCenter">Register Now!</a>';
             } else {
               echo '<a href="student/studentProfile.php" class="btn btn-primary mt-3">My Profile</a>';
             }
