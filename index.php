@@ -1,3 +1,5 @@
+<!-- index.php -->
+
 <!-- Start Including Header -->
 <?php
   include('./dbConnection.php');
