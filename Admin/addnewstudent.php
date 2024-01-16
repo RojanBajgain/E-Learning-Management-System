@@ -15,37 +15,47 @@ if(isset($_SESSION['is_admin_login'])) {
 if(isset($_REQUEST['newStuSubmitBtn'])) {
     // Checking for Empty Fields
 
-    if(($_REQUEST['stu_name'] == "" ) || ($_REQUEST['stu_email'] == "" ) || ($_REQUEST['stu_pass'] == "" )
-     || ($_REQUEST['stu_occ'] == "" )) {
+    if (
+        ($_REQUEST['stu_name'] == "") ||
+        ($_REQUEST['stu_email'] == "") ||
+        ($_REQUEST['stu_pass'] == "") ||
+        ($_REQUEST['stu_occ'] == "")
+    ) {
         $msg = '<div class="alert alert-warning col-sm-6 ml-5 mt-2">Fill All Fields</div>';
-     } else {
-
+    } else {
+    
         $stu_name = $_REQUEST['stu_name'];
         $stu_email = $_REQUEST['stu_email'];
         $stu_pass = $_REQUEST['stu_pass'];
         $stu_occ = $_REQUEST['stu_occ'];
-
-        if (!filter_var($stu_email, FILTER_VALIDATE_EMAIL)) {
-            $msg = '<div class="alert alert-danger col-sm-6 ml-5 mt-2">Invalid Email Format</div>';
+    
+        // Check if stu_name contains only letters
+        if (!ctype_alpha($stu_name)) {
+            $msg = '<div class="alert alert-danger col-sm-6 ml-5 mt-2">Name must contain only letters.</div>';
         } else {
-            // Check if the email already exists in the database
-            $check_email_sql = "SELECT * FROM student WHERE stu_email = '$stu_email'";
-            $result = $conn->query($check_email_sql);
-            if ($result->num_rows > 0) {
-                $msg = '<div class="alert alert-danger col-sm-6 ml-5 mt-2">Email already in use.</div>';
+            // Check if the email has a valid format
+            if (!filter_var($stu_email, FILTER_VALIDATE_EMAIL)) {
+                $msg = '<div class="alert alert-danger col-sm-6 ml-5 mt-2">Invalid Email Format</div>';
             } else {
-
-        $sql = "INSERT INTO student (stu_name, stu_email, stu_pass, stu_occ) 
-        VALUES ('$stu_name', '$stu_email', '$stu_pass', '$stu_occ')";
-
-        if($conn -> query($sql) == TRUE) {
-            $msg = '<div class="alert alert-success col-sm-6 ml-5 mt-2">Student Added Successfully.</div>';
-        } else {
-            $msg = '<div class="alert alert-danger col-sm-6 ml-5 mt-2">Unable to Add Student..</div>';
+                // Check if the email already exists in the database
+                $check_email_sql = "SELECT * FROM student WHERE stu_email = '$stu_email'";
+                $result = $conn->query($check_email_sql);
+                if ($result->num_rows > 0) {
+                    $msg = '<div class="alert alert-danger col-sm-6 ml-5 mt-2">Email already in use.</div>';
+                } else {
+    
+                    $sql = "INSERT INTO student (stu_name, stu_email, stu_pass, stu_occ) 
+                            VALUES ('$stu_name', '$stu_email', '$stu_pass', '$stu_occ')";
+    
+                    if ($conn->query($sql) == TRUE) {
+                        $msg = '<div class="alert alert-success col-sm-6 ml-5 mt-2">Student Added Successfully.</div>';
+                    } else {
+                        $msg = '<div class="alert alert-danger col-sm-6 ml-5 mt-2">Unable to Add Student..</div>';
+                    }
+                }
+            }
         }
-     }
-     }
-     }
+    }
 }
 ?>
 
