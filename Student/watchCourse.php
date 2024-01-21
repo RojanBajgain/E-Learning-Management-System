@@ -41,23 +41,23 @@
         <a href="./myCourse.php" class="btn btn-danger">Back To Profile</a>
     </div>
 
-    <div class="container-fluid">
+    <!-- <div class="container-fluid">
         <div class="row">
             <div class="col-sm-3 border-right bg-light">
                 <h4 class="text-center p-3">Lessons</h4>
                 <ul id="playlist" class="nav flex-column">
                     <?php
-                        if(isset($_GET['course_id'])) {
-                            $course_id = $_GET['course_id'];
-                            $sql = "SELECT * FROM lesson WHERE course_id = '$course_id'";
-                            $result = $conn -> query($sql);
-                            if($result -> num_rows > 0) {
-                                while($row = $result -> fetch_assoc()) {
-                                    echo '<li class="nav-item border-bottom py-2 nav-link list-group-item list-group-item-action list-group-item-secondary" 
-                                        movieurl='.$row['lesson_link'].' style="cursor: pointer;">'.$row['lesson_name'].'</li>';
-                                }
-                            }
-                        }
+                        // if(isset($_GET['course_id'])) {
+                        //     $course_id = $_GET['course_id'];
+                        //     $sql = "SELECT * FROM lesson WHERE course_id = '$course_id'";
+                        //     $result = $conn -> query($sql);
+                        //     if($result -> num_rows > 0) {
+                        //         while($row = $result -> fetch_assoc()) {
+                        //             echo '<li class="nav-item border-bottom py-2 nav-link list-group-item list-group-item-action list-group-item-secondary" 
+                        //                 movieurl='.$row['lesson_link'].' style="cursor: pointer;">'.$row['lesson_name'].'</li>';
+                        //         }
+                        //     }
+                        // }
                     ?>
                 </ul>
             </div>
@@ -65,7 +65,58 @@
                     <video id="videoarea" src="" class="mt-3 w-75 ml-2" controls></video>
                 </div>
         </div>
+    </div> -->
+
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 border-right bg-light">
+            <h4 class="text-center p-3">Lessons</h4>
+            <ul id="playlist" class="nav flex-column">
+                <?php
+                if (isset($_GET['course_id'])) {
+                    $course_id = $_GET['course_id'];
+                    $sql = "SELECT * FROM lesson WHERE course_id = '$course_id'";
+                    $result = $conn->query($sql);
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo '<li class="nav-item border-bottom py-2 nav-link list-group-item list-group-item-action list-group-item-secondary" 
+                                    data-movieurl="' . $row['lesson_link'] . '" data-description="' . $row['lesson_desc'] . '"
+                                    style="cursor: pointer;">' . $row['lesson_name'] . '</li>';
+                        }
+                    }
+                }
+                ?>
+            </ul>
+        </div>
+        <div class="col-sm-8">
+            <video id="videoarea" src="" class="mt-3 w-75 ml-2" controls></video>
+            <div>
+            <b>Description</b>
+            </div>
+            <div id="lessonDescription" class="mt-3 ml-2"></div>
+        </div>
     </div>
+</div>
+
+<script>
+    // Add JavaScript to update the video and lesson description when a lesson is clicked
+    var playlistItems = document.querySelectorAll('#playlist .nav-item');
+    var videoArea = document.getElementById('videoarea');
+    var lessonDescription = document.getElementById('lessonDescription');
+
+    playlistItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+            var movieUrl = item.getAttribute('data-movieurl');
+            var description = item.getAttribute('data-description');
+
+            videoArea.src = movieUrl;
+            lessonDescription.innerHTML = '<p>' + description + '</p>';
+        });
+    });
+</script>
+
+
+    
 
 <!-- Jquery and Bootstrap Javascript -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
